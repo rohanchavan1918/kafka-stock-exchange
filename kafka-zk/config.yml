@@ -1,0 +1,5 @@
+kafka:
+  clusters:
+    -
+      name: kse
+      bootstrapServers: kafka:9092

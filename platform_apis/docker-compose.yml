@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  platform_apis:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config/:/config
+      - /var/log/kse/:/var/log/kse/

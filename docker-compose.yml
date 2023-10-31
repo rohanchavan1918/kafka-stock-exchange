@@ -1,0 +1,74 @@
+version: '3'
+
+services:
+  platform_apis:
+    build:
+      context: ./platform_apis/
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./platform_apis/config/:/config
+      - /var/log/kse/:/var/log/kse/
+
+  user_analytics:
+    build:
+      context: ./user_analytics/
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./user_analytics/config/:/config
+      - /var/log/kse/:/var/log/kse/
+
+  stock_ingestor:
+    build:
+      context: ./stock_ingestor/
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./stock_ingestor/config/:/config
+      - /var/log/kse/:/var/log/kse/
+
+  stock_aggregator:
+    build:
+      context: ./stock_aggregator/
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./stock_aggregator/config/:/config
+      - /var/log/kse/:/var/log/kse/
+
+  order_processor:
+    build:
+      context: ./order_processor/
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    volumes:
+      - ./order_processor/config/:/config
+      - /var/log/kse/:/var/log/kse/
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181
+  
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1

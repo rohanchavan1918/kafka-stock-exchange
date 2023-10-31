@@ -1,0 +1,29 @@
+{
+    "port": 8080,
+    "service_name": "platform-api",
+    "db": {
+        "db_host":"172.17.0.1",
+        "db_port":3306,
+        "db_user":"root",
+        "db_pass":"change-me",
+        "db_type": "mysql"
+    },
+    "redis": {
+        "redis_host":"127.0.0.1",
+        "redis_port":6379
+    },
+    "fluent": {
+        "fluent_host": "127.0.0.1",
+        "fluent_port": "5432"
+    },
+    "log_config": {
+        "level": "INFO",
+        "file": "/var/log/kse/platform-api.log",
+        "rotate": 1,
+        "max_size": 15,
+        "max_backups":15,
+        "max_age": 30,
+        "compress": true
+    },
+    "slack_url":""
+}
